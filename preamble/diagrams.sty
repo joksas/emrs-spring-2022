@@ -1,0 +1,91 @@
+% For colored text
+\usepackage{xcolor}
+
+% Main colors
+\definecolor{blue}{RGB}{0, 114, 178}
+\definecolor{orange}{RGB}{230, 159, 0}
+\definecolor{green}{RGB}{0, 158, 115}
+\definecolor{reddish-purple}{RGB}{204, 121, 167 }
+\definecolor{sky-blue}{RGB}{86, 180, 233}
+\definecolor{vermilion}{RGB}{213, 94, 0}
+\definecolor{yellow}{RGB}{240, 228, 66}
+\definecolor{black}{RGB}{0, 0, 0}
+
+% Ordered colors
+\colorlet{color-0}{blue}
+\colorlet{color-1}{orange}
+\colorlet{color-2}{green}
+\colorlet{color-3}{reddish-purple}
+\colorlet{color-4}{sky-blue}
+\colorlet{color-5}{vermilion}
+\colorlet{color-6}{yellow}
+\colorlet{color-7}{black}
+
+% Miscellaneous colors
+\definecolor{black-fake-transparent-25}{RGB}{191, 191, 191}
+\colorlet{color-success}{green}
+\colorlet{color-danger}{vermilion}
+
+% TikZ diagram
+\usepackage{tikz}
+\usetikzlibrary{circuits.ee.IEC}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usetikzlibrary{external}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.text}
+
+\tikzexternalize
+\tikzset{%
+  external/system call={xelatex \tikzexternalcheckshellescape --halt-on-error --interaction=batchmode --output-directory=./.aux --jobname "\image" "\texsource"},
+  /pgf/images/include external/.code={%
+    \includegraphics{.aux/#1}%
+  },
+}
+
+\usepackage{circuitikz}
+
+% Allow to modify current arrow color.
+\makeatletter
+\ctikzset{current arrow color/.initial=black}
+
+\pgfdeclareshape{currarrow}{
+  \anchor{center}{
+    \pgfpointorigin
+  }
+  \anchor{tip}{
+    \pgfpointorigin
+    \pgf@circ@res@step = \pgf@circ@Rlen
+    \divide \pgf@circ@res@step by 16
+    \pgf@x  =\pgf@circ@res@step
+  }
+  \behindforegroundpath{      
+
+    \pgfscope
+    \pgf@circ@res@step = \pgf@circ@Rlen
+    \divide \pgf@circ@res@step by 16
+
+    \pgfpathmoveto{\pgfpoint{-.7\pgf@circ@res@step}{0pt}}
+    \pgfpathlineto{\pgfpoint{-.7\pgf@circ@res@step}{-.8\pgf@circ@res@step}}
+    \pgfpathlineto{\pgfpoint{1\pgf@circ@res@step}{0pt}}
+    \pgfpathlineto{\pgfpoint{-.7\pgf@circ@res@step}{.8\pgf@circ@res@step}}
+    \pgfpathlineto{\pgfpoint{-.7\pgf@circ@res@step}{0pt}}           
+    \pgfsetcolor{\pgfkeysvalueof{/tikz/circuitikz/current arrow color}}
+    \pgfusepath{draw,fill}
+
+    \endpgfscope
+  }
+}
+\makeatother
+
+% For plotting functions.
+\usepackage{pgfplots}
+
+% For inputing tikz images (so it doesn't get recompiled when the order
+% changes)
+\newcommand{\inputtikz}[1]{%
+  \tikzsetnextfilename{tikz--#1}%
+  \input{figures/tikz/#1/f.tex}%
+}
