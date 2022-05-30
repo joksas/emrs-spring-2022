@@ -1,0 +1,5 @@
+% Example text
+\newenvironment<>{exenv}{\begin{altenv}#1%
+    {\usebeamercolor[fg]{example text}}
+{}{\color{.}}{}\ignorespaces}{\ifhmode\unskip\fi\end{altenv}}
+\newcommand<>{\ex}[1]{\begin{exenv}#2\relax#1\end{exenv}}
